@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"> 
-    <head>
-        <meta charset="UTF-8">
-        <title th:text="${title}">Title</title>
-    </head>
-
-    <body>
-        <p th:text="${message}"> </p>
-    </body>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}">Title</title>
+</head>
+<body>
+    <h1 th:text="${title}">Title</h1>
+    <p th:text="${message}"> </p>
+    <form action="#" th:action="@{/submit}" method="post">
+        <label for="guest">Guest</label>
+        <select id="guest" name="guest">
+            <option value="groom">Groom`s side</option>
+            <option value="bride">Bride`s side</option>
+        </select>
+        <br>
+        <label for="relation">Relation:</label>
+        <input type="text" id="relation" name="relation" required>
+        <br>
+        <label for="name">Guest Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <button type="submit">Upload</button>
+    </form>
+</body>
 </html>

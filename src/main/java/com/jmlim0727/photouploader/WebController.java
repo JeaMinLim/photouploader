@@ -23,17 +23,12 @@ public class WebController {
         return "index";
     }
     
-    @GetMapping("/form")
-    public String showForm(Model model) {
-        return "form";
-    }
-    
     @PostMapping("/submit")
-    public String submitForm(@RequestParam("guest") String role,
+    public String submitForm(@RequestParam("guest") String guest,
                              @RequestParam("relation") String relation,
                              @RequestParam("name") String name,
                              Model model) {
-        model.addAttribute("role", role);
+        model.addAttribute("guest", guest);
         model.addAttribute("relation", relation);
         model.addAttribute("name", name);
         return "result";

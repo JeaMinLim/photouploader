@@ -23,9 +23,9 @@ public class uploadController {
             // 파일을 폴더에 저장
             Path path = Paths.get(UPLOAD_DIR + file.getOriginalFilename());
             Files.copy(file.getInputStream(), path);
-            model.addAttribute("message", "File uploaded successfully: " + file.getOriginalFilename());
+            //model.addAttribute("message", "File uploaded successfully: " + file.getOriginalFilename());
         } catch (IOException e) {
-            model.addAttribute("message", "Failed to upload file: " + e.getMessage());
+            //model.addAttribute("message", "Failed to upload file: " + e.getMessage());
         }
         return "upload";
     }
