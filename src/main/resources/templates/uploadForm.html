@@ -2,11 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Upload Result</title>
+    <script>
+        function combineStringsAndSubmit() {
+            var guest = document.getElementById("guest").innerText;
+            var relation = document.getElementById("relation").innerText;
+            var name = document.getElementById("name").innerText;
+            var path = guest + "-" + relation + "-" + name;
+            document.getElementById("path").value = path;
+            document.getElementById("uploadForm").submit();
+        }
+    </script>
 </head>
 <body>
     <h1>Form Submitted Successfully!</h1>
-    <p>Guest: <span th:text="${guest}"></span></p>
-    <p>Relation: <span th:text="${relation}"></span></p>
-    <p>Name: <span th:text="${name}"></span></p>
+    <p>Guest: <span id="guest" th:text="${guest}"></span></p>
+    <p>Relation: <span id="relation" th:text="${relation}"></span></p>
+    <p>Name: <span id="name" th:text="${name}"></span></p>
+
+    <form id="uploadForm" method="POST" action="/uploadFiles" enctype="multipart/form-data">
+        <input type="file" name="files" multiple>
+        <input type="hidden" id="path" name="path">
+        <button type="button" onclick="combineStringsAndSubmit()">Upload</button>
+    </form>
+
 </body>
 </html>

@@ -1,31 +1,14 @@
 package com.jmlim0727.photouploader;
 
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+
+@Data
 public class model {
+    @Size(max = 20, message = "Name must be less than 20 characters")
     private String guest;
+    @Size(max = 20, message = "Name must be less than 20 characters")
     private String relation;
+    @Size(max = 10, message = "Name must be less than 10 characters")
     private String name;
-
-    public String getrelation() {
-        return relation;
-    }
-
-    public void setrelation(String relation) {
-        this.relation = relation;
-    }
-
-    public String getname() {
-        return name;
-    }
-
-    public void setname(String name) {
-        this.name = name;
-    }
-
-    public String getguest() {
-        return guest;
-    }
-
-    public void setguest(String guest) {
-        this.guest = guest;
-    }
 }
