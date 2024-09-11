@@ -12,16 +12,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class uploadController {
 
-    @Value("${sharedlocation}")
+    @Value("${location}")
     private String UPLOAD_DIR;
 
     public String handleFileUpload(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             return "upload";
         }
-
         try {
-            // 파일을 네트워크 공유 폴더에 저장
+            // 파일을 폴더에 저장
             Path path = Paths.get(UPLOAD_DIR + file.getOriginalFilename());
             Files.copy(file.getInputStream(), path);
             model.addAttribute("message", "File uploaded successfully: " + file.getOriginalFilename());
