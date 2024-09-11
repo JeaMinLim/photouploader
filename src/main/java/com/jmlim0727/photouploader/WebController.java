@@ -17,17 +17,17 @@ public class WebController {
 
     @GetMapping("/")
     public String index(Model model) {
-        return "redirect:/upload";
+        return "redirect:/informationForm";
     }
     
-    @GetMapping("/upload")
+    @GetMapping("/informationForm")
     public String showForm(Model model) {
         model.addAttribute("title", title);
         model.addAttribute("message", message);
-        return "uploadForm";
+        return "submitForm";
     }
 
-    @PostMapping("/upload")
+    @PostMapping("/informationForm")
     public String uploadForm(@RequestParam("guest") String guest,
                              @RequestParam("relation") String relation,
                              @RequestParam("name") String name,
@@ -35,7 +35,7 @@ public class WebController {
         model.addAttribute("guest", guest);
         model.addAttribute("relation", relation);
         model.addAttribute("name", name);
-        return "submitForm";
+        return "uploadForm";
     }
 
 
