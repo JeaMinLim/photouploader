@@ -17,20 +17,27 @@ public class WebController {
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("title", title);
-        model.addAttribute("message", message);
-
-        return "index";
+        return "redirect:/upload";
     }
     
-    @PostMapping("/submit")
-    public String submitForm(@RequestParam("guest") String guest,
+    @GetMapping("/upload")
+    public String showForm(Model model) {
+        model.addAttribute("title", title);
+        model.addAttribute("message", message);
+        return "uploadForm";
+    }
+
+    @PostMapping("/upload")
+    public String uploadForm(@RequestParam("guest") String guest,
                              @RequestParam("relation") String relation,
                              @RequestParam("name") String name,
                              Model model) {
         model.addAttribute("guest", guest);
         model.addAttribute("relation", relation);
         model.addAttribute("name", name);
-        return "result";
+        return "submitForm";
     }
+
+
+    
 }
