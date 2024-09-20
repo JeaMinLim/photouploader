@@ -2,33 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Upload Status</title>
-    <script>
-        var socket = new WebSocket("ws://localhost:8080/uploadStatus");
-
-        socket.onopen = function(event) {
-            console.log("WebSocket connection Success");
-        };
-
-        socket.onmessage = function(event) {
-            var message = event.data;
-            var statusList = document.getElementById("statusList");
-            var listItem = document.createElement("li");
-            listItem.textContent = message;
-            statusList.appendChild(listItem);
-        };
-
-        socket.onerror = function(event) {
-            console.error("WebSocket Error:", event);
-        };
-
-        socket.onclose = function(event) {
-            console.log("WebSocket Connection close");
-        };
-    </script>
 </head>
 <body>
     <h1 th:text="${message}"></h1>
-    <ul id="statusList"></ul>
     <a href="/informationForm">upload again</a>
 </body>
 </html>

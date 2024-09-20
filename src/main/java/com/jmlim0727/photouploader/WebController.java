@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,9 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class WebController {
-    
-    @Autowired
-    private FileUploadStatusHandler fileUploadStatusHandler;
 
     @Value("${photouploader.title}")
     private String title;
@@ -53,20 +53,22 @@ public class WebController {
 
     @PostMapping("/uploadFiles")
     public String uploadFiles(@RequestParam("path") String path, @RequestParam("files") List<MultipartFile> files, Model model) {
-        File directory = new File(location + "\\" + path);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
+        String formattedNow = now.format(formatter);
+
+        File directory = new File(location + "\\" + path + "_" + formattedNow );
         if (!directory.exists()) {
             directory.mkdirs();
         }
 
         for (MultipartFile file : files) {
-            try {
-                String filePath = location + "\\" + path + "\\" + file.getOriginalFilename();
+            try {             
+                String filePath = location + "\\" + path + "_" + formattedNow + "\\" + file.getOriginalFilename();
                 System.out.println("filePath = " + filePath);
-                file.transferTo(new File(filePath));
-                fileUploadStatusHandler.sendMessage(file.getOriginalFilename() + " - Upload Success");
+                file.transferTo(new File(filePath));           
             } catch (IOException e) {
                 e.printStackTrace();
-                fileUploadStatusHandler.sendMessage(file.getOriginalFilename() + " - Upload Failed");
             }
         }
         model.addAttribute("message", "Upload Complete");
