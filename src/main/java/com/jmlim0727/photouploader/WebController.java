@@ -3,10 +3,13 @@ package com.jmlim0727.photouploader;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +52,7 @@ public class WebController {
     }
 
     @PostMapping("/uploadFiles")
-    public String uploadFiles(@RequestParam("path") String path, @RequestParam("files") List<MultipartFile> files, Model model) {
+    public ResponseEntity<?> uploadFiles(@RequestParam("path") String path, @RequestParam("files") List<MultipartFile> files) {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
         String formattedNow = now.format(formatter);
@@ -59,16 +62,22 @@ public class WebController {
             directory.mkdirs();
         }
 
+        int totalFiles = files.size();
+        int uploadedFiles = 0;
+
         for (MultipartFile file : files) {
             try {             
                 String filePath = location + "\\" + path + "_" + formattedNow + "\\" + file.getOriginalFilename();
                 System.out.println("filePath = " + filePath);
-                file.transferTo(new File(filePath));           
+                file.transferTo(new File(filePath));
+                
+                uploadedFiles++;
+
             } catch (IOException e) {
                 e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("File upload failed");
             }
         }
-        model.addAttribute("message", "Upload Complete");
-        return "uploadStatus";
+        return ResponseEntity.ok(Map.of("totalFiles", totalFiles, "uploadedFiles", uploadedFiles));
     }
 }

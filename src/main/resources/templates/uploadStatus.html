@@ -2,9 +2,47 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Upload Status</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    <h1 th:text="${message}"></h1>
-    <a href="/informationForm">upload again</a>
+    <h1 id="message">Uploading...</h1>
+    <p>Total Files: <span id="totalFiles">0</span></p>
+    <p>Uploaded Files: <span id="uploadedFiles">0</span></p>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="files" multiple>
+        <input type="text" name="path" placeholder="Enter path">
+        <button type="button" onclick="uploadFiles()">Upload</button>
+    </form>
+    <a href="/informationForm">Upload Again</a>
+
+    <script>
+        function uploadFiles() {
+            const form = document.getElementById('uploadForm');
+            const formData = new FormData(form);
+
+            document.getElementById('message').innerText = 'Uploading...';
+
+            axios.post('/uploadFiles', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                onUploadProgress: function(progressEvent) {
+                    const totalFiles = formData.getAll('files').length;
+                    const uploadedFiles = Math.round((progressEvent.loaded / progressEvent.total) * totalFiles);
+                    document.getElementById('totalFiles').innerText = totalFiles;
+                    document.getElementById('uploadedFiles').innerText = uploadedFiles;
+                }
+            })
+            .then(response => {
+                document.getElementById('message').innerText = 'Upload Complete';
+                document.getElementById('totalFiles').innerText = response.data.totalFiles;
+                document.getElementById('uploadedFiles').innerText = response.data.uploadedFiles;
+            })
+            .catch(error => {
+                document.getElementById('message').innerText = 'Upload Failed';
+                console.error(error);
+            });
+        }
+    </script>
 </body>
 </html>

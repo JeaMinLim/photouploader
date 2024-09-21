@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Upload Result</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         function combineStringsAndSubmit() {
             var guest = document.getElementById("guest").innerText;
@@ -9,21 +10,45 @@
             var name = document.getElementById("name").innerText;
             var path = guest + "-" + relation + "-" + name;
             document.getElementById("path").value = path;
-            document.getElementById("uploadForm").submit();
+
+            var form = document.getElementById("uploadForm");
+            var formData = new FormData(form);
+
+            axios.post('/uploadFiles', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                onUploadProgress: function(progressEvent) {
+                    const totalFiles = formData.getAll('files').length;
+                    const uploadedFiles = Math.round((progressEvent.loaded / progressEvent.total) * totalFiles);
+                    document.getElementById('totalFiles').innerText = totalFiles;
+                    document.getElementById('uploadedFiles').innerText = uploadedFiles;
+                }
+            })
+            .then(response => {
+                document.getElementById('message').innerText = 'Upload Complete';
+                document.getElementById('totalFiles').innerText = response.data.totalFiles;
+                document.getElementById('uploadedFiles').innerText = response.data.uploadedFiles;
+            })
+            .catch(error => {
+                document.getElementById('message').innerText = 'Upload Failed';
+                console.error(error);
+            });
         }
     </script>
 </head>
 <body>
-    <h1>Form Submitted Successfully!</h1>
+    <h1 id="message">Upload Page</h1>
     <p>Guest: <span id="guest" th:text="${guest}"></span></p>
     <p>Relation: <span id="relation" th:text="${relation}"></span></p>
     <p>Name: <span id="name" th:text="${name}"></span></p>
+    <p>Total Files: <span id="totalFiles">0</span></p>
+    <p>Uploaded Files: <span id="uploadedFiles">0</span></p>
 
     <form id="uploadForm" method="POST" action="/uploadFiles" enctype="multipart/form-data">
         <input type="file" name="files" multiple>
         <input type="hidden" id="path" name="path">
         <button type="button" onclick="combineStringsAndSubmit()">Upload</button>
     </form>
-
 </body>
 </html>
