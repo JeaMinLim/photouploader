@@ -1,21 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title th:text="${title}">Title</title>
-</head>
-<body>
-    <h1 th:text="${title}">Title</h1>
-    <p th:text="${message}"> </p>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/default_layout}">
+<th:block layout:fragment="content">
+<div>
+    <h1 th:text="#{submitform.header}">Title</h1>
+    <p th:text="#{submitform.message}"> </p>
+    <p>
+        <a href="?lang=en">English</a>
+        <a href="?lang=ko">한국어</a> |
+    </p>
     <form th:action="@{/informationForm}" method="post">
-        <select id="guest" name="guest">
-            <option value="groom">Groom`s side</option>
-            <option value="bride">Bride`s side</option>
+        <select id="guest" name="guest"> 
+            <label for="guest" th:text="#{submitform.guest}">guest:</label>
+            <option value="groom" th:text="#{submitform.groom}">Groom</option>
+            <option value="bride" th:text="#{submitform.bride}">Bride</option>
         </select>
-        <label for="relation">Relation:</label>
+        <label for="relation" th:text="#{submitform.relation}" >Relation:</label>
         <input type="text" id="relation" name="relation" /><br/>
-        <label for="name">Name:</label>
+        <label for="name" th:text="#{submitform.name}">Name:</label>
         <input type="text" id="name" name="name" /><br/>
-        <button type="submit">Submit</button>
+        <button type="submit" th:text="#{submitform.submit}">Submit</button>
     </form>
-</body>
+</div>
+</th:block>
 </html>

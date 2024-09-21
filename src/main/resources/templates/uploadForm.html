@@ -1,54 +1,54 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Upload Result</title>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-        function combineStringsAndSubmit() {
-            var guest = document.getElementById("guest").innerText;
-            var relation = document.getElementById("relation").innerText;
-            var name = document.getElementById("name").innerText;
-            var path = guest + "-" + relation + "-" + name;
-            document.getElementById("path").value = path;
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/default_layout}">
 
-            var form = document.getElementById("uploadForm");
-            var formData = new FormData(form);
+<th:block layout:fragment="content">
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    function combineStringsAndSubmit() {
+        var guest = document.getElementById("guest").innerText;
+        var relation = document.getElementById("relation").innerText;
+        var name = document.getElementById("name").innerText;
+        var path = guest + "-" + relation + "-" + name;
+        document.getElementById("path").value = path;
 
-            axios.post('/uploadFiles', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-                onUploadProgress: function(progressEvent) {
-                    const totalFiles = formData.getAll('files').length;
-                    const uploadedFiles = Math.round((progressEvent.loaded / progressEvent.total) * totalFiles);
-                    document.getElementById('totalFiles').innerText = totalFiles;
-                    document.getElementById('uploadedFiles').innerText = uploadedFiles;
-                }
-            })
-            .then(response => {
-                document.getElementById('message').innerText = 'Upload Complete';
-                document.getElementById('totalFiles').innerText = response.data.totalFiles;
-                document.getElementById('uploadedFiles').innerText = response.data.uploadedFiles;
-            })
-            .catch(error => {
-                document.getElementById('message').innerText = 'Upload Failed';
-                console.error(error);
-            });
-        }
-    </script>
-</head>
-<body>
+        var form = document.getElementById("uploadForm");
+        var formData = new FormData(form);
+
+        axios.post('/uploadFiles', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            onUploadProgress: function(progressEvent) {
+                const totalFiles = formData.getAll('files').length;
+                const uploadedFiles = Math.round((progressEvent.loaded / progressEvent.total) * totalFiles);
+                document.getElementById('totalFiles').innerText = totalFiles;
+                document.getElementById('uploadedFiles').innerText = uploadedFiles;
+            }
+        })
+        .then(response => {
+            document.getElementById('message').innerText = 'Upload Complete';
+            document.getElementById('totalFiles').innerText = response.data.totalFiles;
+            document.getElementById('uploadedFiles').innerText = response.data.uploadedFiles;
+        })
+        .catch(error => {
+            document.getElementById('message').innerText = 'Upload Failed';
+            console.error(error);
+        });
+    }
+</script>
+<div>
     <h1 id="message">Upload Page</h1>
-    <p>Guest: <span id="guest" th:text="${guest}"></span></p>
-    <p>Relation: <span id="relation" th:text="${relation}"></span></p>
-    <p>Name: <span id="name" th:text="${name}"></span></p>
-    <p>Total Files: <span id="totalFiles">0</span></p>
-    <p>Uploaded Files: <span id="uploadedFiles">0</span></p>
+    <p><span th:text="#{uploadForm.guest}">Guest: </span><span id="guest" th:text="${guest}"></span> </p>
+    <p><span th:text="#{uploadForm.relation}">Relation: </span><span id="relation" th:text="${relation}"></span></p>
+    <p><span th:text="#{uploadForm.name}">Name: </span><span id="name" th:text="${name}"></span></p>
+    <p><span th:text="#{uploadForm.totalfiles}">Total Files: </span><span id="totalFiles">0</span></p>
+    <p><span th:text="#{uploadForm.uploadedfiles}">Uploaded Files: </span><span id="uploadedFiles">0</span></p>
 
     <form id="uploadForm" method="POST" action="/uploadFiles" enctype="multipart/form-data">
         <input type="file" name="files" multiple>
         <input type="hidden" id="path" name="path">
-        <button type="button" onclick="combineStringsAndSubmit()">Upload</button>
+        <button type="button" onclick="combineStringsAndSubmit()" th:text="#{uploadForm.uploadbutton}">Upload</button>
     </form>
-</body>
+</div>
+</th:block>
 </html>

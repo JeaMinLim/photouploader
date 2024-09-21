@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class model {
+public class FormModel {
     @Size(max = 20, message = "Name must be less than 20 characters")
     private String guest;
     @Size(max = 20, message = "Name must be less than 20 characters")

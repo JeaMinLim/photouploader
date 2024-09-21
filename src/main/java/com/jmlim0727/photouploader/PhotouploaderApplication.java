@@ -15,10 +15,8 @@ public class PhotouploaderApplication implements CommandLineRunner {
 	@Value("${location}")
     private String LOCATION;
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(PhotouploaderApplication.class, args);
-		
 	}
 
 	@Override

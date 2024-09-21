@@ -3,6 +3,7 @@ package com.jmlim0727.photouploader;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,23 +20,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class WebController {
-
-    @Value("${photouploader.title}")
-    private String title;
-    @Value("${photouploader.message}")
-    private String message;
     @Value("${location}")
     private String location;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Locale locale, Model model) {
         return "redirect:/informationForm";
     }
     
     @GetMapping("/informationForm")
-    public String showForm(Model model) {
-        model.addAttribute("title", title);
-        model.addAttribute("message", message);
+    public String showForm(Locale locale, Model model) {
         return "submitForm";
     }
 
@@ -43,16 +37,15 @@ public class WebController {
     public String uploadForm(@RequestParam("guest") String guest,
                              @RequestParam("relation") String relation,
                              @RequestParam("name") String name,
-                             Model model) {
+                             Locale locale, Model model) {
         model.addAttribute("guest", guest);
         model.addAttribute("relation", relation);
         model.addAttribute("name", name);
-
         return "uploadForm";
     }
 
     @PostMapping("/uploadFiles")
-    public ResponseEntity<?> uploadFiles(@RequestParam("path") String path, @RequestParam("files") List<MultipartFile> files) {
+    public ResponseEntity<?> uploadFiles(Locale locale, @RequestParam("path") String path, @RequestParam("files") List<MultipartFile> files) {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
         String formattedNow = now.format(formatter);

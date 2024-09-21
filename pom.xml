@@ -12,7 +12,7 @@
 	<artifactId>photouploader</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>photouploader</name>
-	<description>Photo and Video uploader project for Spring Boot</description>
+	<description>file uploader project for Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -50,6 +50,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>nz.net.ultraq.thymeleaf</groupId>
+			<artifactId>thymeleaf-layout-dialect</artifactId>
 		</dependency>
 
 		<dependency>
