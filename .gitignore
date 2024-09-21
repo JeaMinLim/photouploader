@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### personal ###
+*.jpg
+*.mp3
+/src/main/resources/personal/

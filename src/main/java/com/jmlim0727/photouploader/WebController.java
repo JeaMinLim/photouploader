@@ -33,11 +33,18 @@ public class WebController {
         return "submitForm";
     }
 
+    private String sanitizeFolderName(String input) {
+        return input.replaceAll("[\\\\/:*?\"<>|]", "");
+    }
+
     @PostMapping("/informationForm")
     public String uploadForm(@RequestParam("guest") String guest,
                              @RequestParam("relation") String relation,
                              @RequestParam("name") String name,
                              Locale locale, Model model) {
+        guest = sanitizeFolderName(guest);
+        relation = sanitizeFolderName(relation);
+        name = sanitizeFolderName(name);
         model.addAttribute("guest", guest);
         model.addAttribute("relation", relation);
         model.addAttribute("name", name);
