@@ -11,3 +11,5 @@ java -jar photouploader.jar --location=\\\\mynas\\shared-folder\\
 ```
 
 Once the JAR package is running, you can access the application through a web browser. By default, it is accessible at ```localhost:8080```. Upon accessing, you will be prompted to enter three parameters. These parameters are required to create a folder before uploading the files.
+
+Background.jpg  is made by MS Copilot
